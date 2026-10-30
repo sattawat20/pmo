@@ -42,7 +42,7 @@
 					<span class="block font-display text-xs font-light text-white/80">มหาวิทยาลัยมหาสารคาม</span>
 				</span>
 			</a>
-			<nav class="flex flex-1 items-center gap-1 overflow-x-auto">
+			<nav class="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto [scrollbar-width:none]">
 				{#each nav as item (item.href)}
 					<a
 						href={item.href}

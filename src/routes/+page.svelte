@@ -125,7 +125,7 @@
 			<Card.Content class="space-y-4">
 				{#each data.byProject as p (p.id)}
 					<div>
-						<div class="mb-1.5 flex items-baseline justify-between gap-2 text-sm">
+						<div class="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-2 text-sm">
 							<a href="/projects/{p.id}" class="font-medium hover:underline">{p.name}</a>
 							<span class="shrink-0 text-xs text-muted-foreground tabular-nums">
 								เสร็จ {p.done}/{p.total} · คืบหน้าเฉลี่ย {Math.round(p.avgProgress)}%

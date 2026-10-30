@@ -23,7 +23,7 @@
 </div>
 
 <!-- จอแคบเลื่อนในกรอบได้ เพื่อไม่ให้ป้ายแกนเบียดกัน -->
-<div class="overflow-x-auto">
+<div class="overflow-x-auto overflow-y-hidden pb-2">
 	<div class="flex min-w-[30rem] items-stretch gap-1" role="img" aria-label="จำนวนงานที่ยังไม่เสร็จตามสัปดาห์ของกำหนดส่ง">
 		{#each columns as c (c.key)}
 			<div class="flex min-w-0 flex-1 flex-col" use:tip={c.hint}>

@@ -35,7 +35,8 @@
 </script>
 
 {#if rows.length}
-	<div class="grid grid-cols-[minmax(0,1fr)_repeat(4,minmax(3rem,3.5rem))] gap-0.5 text-xs">
+	<!-- คอลัมน์ชื่อกว้างเท่าที่ต้องใช้ (จอแคบไม่เกิน 6.5rem) ที่เหลือให้ช่องตัวเลขขยายเต็มการ์ด -->
+	<div class="grid grid-cols-[fit-content(6.5rem)_repeat(4,minmax(0,1fr))] gap-0.5 text-xs sm:grid-cols-[fit-content(9rem)_repeat(4,minmax(0,1fr))]">
 		<div></div>
 		{#each COLUMNS as c, i (i)}
 			<div class="flex flex-col items-center justify-end gap-0.5 pb-1 text-center leading-tight text-muted-foreground">
