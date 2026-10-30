@@ -4,6 +4,9 @@
 	import StatusBar from '#lib/components/StatusBar.svelte';
 	import TimeBadge from '#lib/components/TimeBadge.svelte';
 	import LogEntry from '#lib/components/LogEntry.svelte';
+	import StatusDonut from '#lib/components/charts/StatusDonut.svelte';
+	import WeeklyDueChart from '#lib/components/charts/WeeklyDueChart.svelte';
+	import HoursChart from '#lib/components/charts/HoursChart.svelte';
 	import { STATUSES, STATUS_COLOR, STATUS_LABEL, fmtDate } from '#lib/task-utils.js';
 	import type { PageProps } from './$types';
 
@@ -48,7 +51,24 @@
 	{/each}
 </div>
 
-<div class="grid gap-6 lg:grid-cols-3">
+<div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+	<Card.Root>
+		<Card.Header>
+			<Card.Title>สถานะงาน{data.isAdmin ? 'ทั้งทีม' : 'ของฉัน'}</Card.Title>
+			<Card.Description>สัดส่วนงานแต่ละสถานะ</Card.Description>
+		</Card.Header>
+		<Card.Content><StatusDonut counts={s} /></Card.Content>
+	</Card.Root>
+	<Card.Root class="lg:col-span-2">
+		<Card.Header>
+			<Card.Title>กำหนดส่งรายสัปดาห์</Card.Title>
+			<Card.Description>งานที่ยังไม่เสร็จ แยกตามสัปดาห์ที่ครบกำหนด</Card.Description>
+		</Card.Header>
+		<Card.Content><WeeklyDueChart {...data.weekly} /></Card.Content>
+	</Card.Root>
+</div>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 	<div class="space-y-6 lg:col-span-2">
 		{#if data.isAdmin}
 			<Card.Root>
@@ -87,6 +107,13 @@
 						</Table.Body>
 					</Table.Root>
 				</Card.Content>
+			</Card.Root>
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>ชั่วโมงทำงานรายคน</Card.Title>
+					<Card.Description>เทียบชั่วโมงประเมินกับชั่วโมงที่ใช้จริง</Card.Description>
+				</Card.Header>
+				<Card.Content><HoursChart people={data.people} /></Card.Content>
 			</Card.Root>
 		{/if}
 

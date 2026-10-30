@@ -18,6 +18,31 @@ function summarize(rows: TaskRow[], today: string) {
 	return { ...s, rate: s.total ? s.done / s.total : 0 };
 }
 
+/** งานที่ยังไม่เสร็จ แยกตามสัปดาห์ของกำหนดส่ง (เริ่มวันจันทร์) 8 สัปดาห์ข้างหน้า */
+function weeklyDue(rows: TaskRow[], today: string) {
+	const DAY = 864e5;
+	const WEEKS = 8;
+	const t = Date.parse(today);
+	const monday = t - ((new Date(t).getUTCDay() + 6) % 7) * DAY;
+	const weeks = Array.from({ length: WEEKS }, (_, i) => ({
+		start: new Date(monday + i * 7 * DAY).toISOString().slice(0, 10),
+		count: 0
+	}));
+	let overdue = 0;
+	let later = 0;
+	for (const r of rows) {
+		if (r.status === 'done' || !r.dueDate) continue;
+		if (r.dueDate < today) {
+			overdue++;
+			continue;
+		}
+		const i = Math.floor((Date.parse(r.dueDate) - monday) / (7 * DAY));
+		if (i < WEEKS) weeks[i].count++;
+		else later++;
+	}
+	return { overdue, weeks, later };
+}
+
 export const load: PageServerLoad = async ({ locals }) => {
 	const me = locals.user!;
 	const isAdmin = me.role === 'admin';
@@ -49,5 +74,14 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.orderBy(desc(activityLogs.createdAt), desc(activityLogs.id))
 		.limit(8);
 
-	return { today, isAdmin, summary: summarize(scope, today), people, byProject, late, recent };
+	return {
+		today,
+		isAdmin,
+		summary: summarize(scope, today),
+		weekly: weeklyDue(scope, today),
+		people,
+		byProject,
+		late,
+		recent
+	};
 };
