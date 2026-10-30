@@ -6,7 +6,10 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "wrangler types --check && vite build",
-		"preview": "wrangler pages dev .svelte-kit/cloudflare --port 4173",
+		"preview": "wrangler dev --port 4173",
+		"deploy": "npm run build && wrangler deploy",
+		"db:migrate:remote": "wrangler d1 migrations apply pmo-tracker-db --remote",
+		"db:export": "tsx scripts/export-sql.ts",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

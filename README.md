@@ -51,7 +51,7 @@ src/
     components/ui/                  shadcn-svelte
     server/
       db/schema.ts                  ตาราง users, sessions, projects, tasks, activity_logs
-      db/index.ts                   getDb(): D1 binding บน Cloudflare / libsql ไฟล์ local.db บนเครื่อง
+      db/index.ts                   getDb(): libsql ไฟล์ local.db บนเครื่อง / D1 binding บน Cloudflare
       auth.ts                       PBKDF2 + session cookie (Web Crypto — รันได้ทั้ง Node และ Workers)
       tasks.ts / projects.ts        สร้าง/แก้/ลบ + ตรวจสิทธิ์ + เขียน log + ย้อนกลับ
       activity.ts                   diff ก่อน/หลัง และบันทึก activity log
@@ -68,11 +68,24 @@ src/
 | งานทั้งหมด | `tasks` | สถานะ: ยังไม่เริ่ม→To do, กำลังดำเนินการ/รอตรวจ/ระงับ→Doing, เสร็จแล้ว→Done (รอตรวจ/ระงับ ใส่ไว้ในหมายเหตุ) |
 | คอลัมน์ วันคงเหลือ, สถานะเวลา, ชีต ภาพรวม | — | เป็นค่าคำนวณ ระบบคำนวณสดจากกำหนดส่งแทน |
 
-## ย้ายไป Cloudflare D1 + Pages
+## Deploy บน Cloudflare Workers + D1
 
-1. `npx wrangler d1 create pmo` แล้วเปิดคอมเมนต์ `d1_databases` ใน [wrangler.jsonc](wrangler.jsonc) ใส่ `database_id`
-2. `npx wrangler d1 migrations apply pmo --remote` (ใช้ไฟล์ใน `drizzle/`)
-3. นำเข้าข้อมูลเริ่มต้น: export จาก local ด้วย `sqlite3 local.db .dump` หรือปรับ seed ให้เขียนไฟล์ SQL แล้ว `wrangler d1 execute`
-4. `npm run build` แล้ว deploy `.svelte-kit/cloudflare` ด้วย `npx wrangler pages deploy`
+ใช้งานอยู่ที่ https://pmo-tracker.sattawat-th.workers.dev (Worker `pmo-tracker`, D1 `pmo-tracker-db`)
 
-โค้ดไม่ต้องแก้ — `getDb()` ใช้ D1 อัตโนมัติเมื่อมี binding `DB`
+```bash
+npx wrangler login       # ครั้งแรกครั้งเดียว
+npm run deploy           # build แล้ว deploy
+```
+
+เมื่อแก้ schema: `npm run db:generate` แล้ว `npm run db:migrate:remote`
+
+นำข้อมูลจาก local ขึ้น D1 (**ล้างข้อมูลบน D1 ก่อนนำเข้า**):
+
+```bash
+npm run db:export -- out.sql
+npx wrangler d1 execute pmo-tracker-db --remote --file out.sql
+```
+
+`getDb()` เลือกฐานข้อมูลเอง: มี `DATABASE_URL` ใน `.env` ใช้ไฟล์ SQLite บนเครื่อง ไม่มีใช้ D1 binding `DB` จาก `cloudflare:workers`
+
+> ⚠️ รหัสผ่านเริ่มต้นอยู่ใน repo นี้ ต้องเปลี่ยนรหัสผ่านทุกบัญชีก่อนใช้งานจริงบนเว็บสาธารณะ
