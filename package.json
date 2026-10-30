@@ -10,6 +10,7 @@
 		"deploy": "npm run build && wrangler deploy",
 		"db:migrate:remote": "wrangler d1 migrations apply pmo-tracker-db --remote",
 		"db:export": "tsx scripts/export-sql.ts",
+		"user:add": "tsx scripts/add-user.ts",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
