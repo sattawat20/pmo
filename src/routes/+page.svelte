@@ -2,11 +2,11 @@
 	import * as Card from '#lib/components/ui/card/index.js';
 	import * as Table from '#lib/components/ui/table/index.js';
 	import StatusBar from '#lib/components/StatusBar.svelte';
-	import TimeBadge from '#lib/components/TimeBadge.svelte';
 	import LogEntry from '#lib/components/LogEntry.svelte';
 	import StatusDonut from '#lib/components/charts/StatusDonut.svelte';
 	import WeeklyDueChart from '#lib/components/charts/WeeklyDueChart.svelte';
 	import HoursChart from '#lib/components/charts/HoursChart.svelte';
+	import WatchHeatMap from '#lib/components/charts/WatchHeatMap.svelte';
 	import { STATUSES, STATUS_COLOR, STATUS_LABEL, fmtDate } from '#lib/task-utils.js';
 	import type { PageProps } from './$types';
 
@@ -144,25 +144,10 @@
 	<div class="space-y-6">
 		<Card.Root>
 			<Card.Header>
-				<Card.Title>งานที่ช้า / ใกล้ครบกำหนด</Card.Title>
-				<Card.Description>ยังไม่เสร็จ และเลยหรือเหลือไม่เกิน 3 วัน</Card.Description>
+				<Card.Title>เฝ้าระวังงานที่ช้า / ใกล้ครบกำหนด</Card.Title>
+				<Card.Description>งานที่ยังไม่เสร็จ {data.isAdmin ? 'รายคน' : 'รายโปรเจกต์'} เรียงกลุ่มที่เสี่ยงสุดไว้บน</Card.Description>
 			</Card.Header>
-			<Card.Content class="divide-y">
-				{#each data.late as t (t.id)}
-					<a href="/tasks/{t.id}" class="block py-2.5 first:pt-0 hover:opacity-80">
-						<div class="flex items-start justify-between gap-2">
-							<div class="min-w-0 text-sm font-medium">{t.code} {t.title}</div>
-						</div>
-						<div class="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-							<TimeBadge status={t.status} dueDate={t.dueDate} today={data.today} />
-							<span>{t.assigneeName ?? 'ไม่มีผู้รับผิดชอบ'}</span>
-							<span>· กำหนด {fmtDate(t.dueDate)}</span>
-						</div>
-					</a>
-				{:else}
-					<p class="text-sm text-muted-foreground">ไม่มีงานที่ช้า 🎉</p>
-				{/each}
-			</Card.Content>
+			<Card.Content><WatchHeatMap rows={data.watch} by={data.isAdmin ? 'person' : 'project'} /></Card.Content>
 		</Card.Root>
 
 		<Card.Root>

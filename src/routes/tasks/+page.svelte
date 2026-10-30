@@ -11,7 +11,7 @@
 	import FilterSelect from '#lib/components/FilterSelect.svelte';
 	import TaskForm from '#lib/components/TaskForm.svelte';
 	import TimeBadge from '#lib/components/TimeBadge.svelte';
-	import { PRIORITY_LABEL, STATUSES, STATUS_COLOR, STATUS_LABEL, TIME_STATUS_LABEL, fmtDate } from '#lib/task-utils.js';
+	import { PRIORITY_LABEL, STATUSES, STATUS_COLOR, STATUS_LABEL, TIME_STATUS_LABEL, WATCH_RANGES, fmtDate } from '#lib/task-utils.js';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -66,7 +66,7 @@
 	<FilterSelect name="status" label="สถานะ" value={data.filter.status}
 		options={[{ value: 'all', label: 'ทั้งหมด' }, ...STATUSES.map((s) => ({ value: s, label: STATUS_LABEL[s] }))]} />
 	<FilterSelect name="time" label="เวลา" value={data.filter.time}
-		options={[{ value: 'all', label: 'ทั้งหมด' }, ...(['overdue', 'due-soon', 'normal', 'done'] as const).map((s) => ({ value: s, label: TIME_STATUS_LABEL[s] }))]} />
+		options={[{ value: 'all', label: 'ทั้งหมด' }, ...(['overdue', 'due-soon', 'normal', 'done'] as const).map((s) => ({ value: s, label: TIME_STATUS_LABEL[s] })), ...Object.entries(WATCH_RANGES).map(([value, r]) => ({ value, label: r.label }))]} />
 </div>
 
 <Card.Root class="py-0">

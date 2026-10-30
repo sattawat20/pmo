@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import { listPeople, listProjects, listTasks } from '#lib/server/lookups.js';
 import { createTask, parseTaskForm } from '#lib/server/tasks.js';
 import { guard } from '#lib/server/action-error.js';
-import { timeStatus, todayISO } from '#lib/task-utils.js';
+import { matchesTime, todayISO } from '#lib/task-utils.js';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			(f.assignee === 'all' || String(t.assigneeId) === f.assignee) &&
 			(f.project === 'all' || String(t.projectId) === f.project) &&
 			(f.status === 'all' || t.status === f.status) &&
-			(f.time === 'all' || timeStatus(t, today) === f.time) &&
+			(f.time === 'all' || matchesTime(t, f.time, today)) &&
 			(!q || `${t.code} ${t.title} ${t.note ?? ''}`.toLowerCase().includes(q))
 	);
 	return {

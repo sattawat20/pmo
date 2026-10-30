@@ -43,6 +43,20 @@ export const TIME_STATUS_LABEL: Record<TimeStatus, string> = {
 	none: '-'
 };
 
+/** ช่วงเวลาละเอียดของ heat map เฝ้าระวัง (จำนวนวันคงเหลือ) ใช้เป็นตัวกรองในหน้างานด้วย */
+export const WATCH_RANGES: Record<string, { label: string; min: number; max: number }> = {
+	'overdue-long': { label: 'เลยเกิน 3 วัน', min: -Infinity, max: -4 },
+	'overdue-recent': { label: 'เลย 1–3 วัน', min: -3, max: -1 },
+	'due-week': { label: 'เหลือ 4–7 วัน', min: 4, max: 7 }
+};
+
+export function matchesTime(t: { status: Status; dueDate: string | null }, key: string, today = todayISO()) {
+	const range = WATCH_RANGES[key];
+	if (!range) return timeStatus(t, today) === key;
+	const d = daysLeft(t.dueDate, today);
+	return t.status !== 'done' && d != null && d >= range.min && d <= range.max;
+}
+
 const thDate = new Intl.DateTimeFormat('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
 const thDateTime = new Intl.DateTimeFormat('th-TH', {
 	day: 'numeric',
