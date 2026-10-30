@@ -1,0 +1,175 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+/* ฟอนต์: หัวเรื่อง Anuphan + เนื้อความ Noto Sans Thai Looped (ฟรี, SIL OFL) */
+@import '@fontsource/anuphan/300.css';
+@import '@fontsource/anuphan/400.css';
+@import '@fontsource/anuphan/600.css';
+@import '@fontsource/anuphan/700.css';
+@import '@fontsource/noto-sans-thai-looped/400.css';
+@import '@fontsource/noto-sans-thai-looped/500.css';
+@import '@fontsource/noto-sans-thai-looped/600.css';
+@import '@fontsource/noto-sans-thai-looped/700.css';
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant data-open {
+	&:where([data-state='open']),
+	&:where([data-open]:not([data-open='false'])) {
+		@slot;
+	}
+}
+@custom-variant data-closed {
+	&:where([data-state='closed']),
+	&:where([data-closed]:not([data-closed='false'])) {
+		@slot;
+	}
+}
+@custom-variant data-checked {
+	&:where([data-state='checked']),
+	&:where([data-checked]:not([data-checked='false'])) {
+		@slot;
+	}
+}
+@custom-variant data-disabled {
+	&:where([data-disabled='true']),
+	&:where([data-disabled]:not([data-disabled='false'])) {
+		@slot;
+	}
+}
+@custom-variant data-active {
+	&:where([data-state='active']),
+	&:where([data-active]:not([data-active='false'])) {
+		@slot;
+	}
+}
+@custom-variant data-horizontal {
+	&:where([data-orientation='horizontal']) {
+		@slot;
+	}
+}
+@custom-variant data-vertical {
+	&:where([data-orientation='vertical']) {
+		@slot;
+	}
+}
+
+/* ชุดสี CI มหาวิทยาลัยมหาสารคาม */
+:root {
+	--msu-green: #00824c; /* Campus Green */
+	--msu-green-dark: #006a3d;
+	--msu-yellow: #ffcd22; /* เหลือง มมส */
+	--msu-cloud: #f0eee9; /* Cloud Dancer */
+	--msu-ink: #333333; /* เทาเข้ม */
+
+	--radius: 0.625rem;
+	--background: var(--msu-cloud);
+	--foreground: var(--msu-ink);
+	--card: #ffffff;
+	--card-foreground: var(--msu-ink);
+	--popover: #ffffff;
+	--popover-foreground: var(--msu-ink);
+	--primary: var(--msu-green);
+	--primary-foreground: #ffffff;
+	--secondary: #e2f0e8;
+	--secondary-foreground: #005a34;
+	--muted: #e8e5de;
+	--muted-foreground: #66635c;
+	--accent: var(--msu-yellow);
+	--accent-foreground: var(--msu-ink);
+	--destructive: #c62f3b;
+	--border: #dedad1;
+	--input: #dedad1;
+	--ring: var(--msu-green);
+	--sidebar: var(--msu-green);
+
+	--font-heading: 'Anuphan', 'Noto Sans Thai Looped', ui-sans-serif, system-ui, sans-serif;
+	--font-body: 'Noto Sans Thai Looped', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif;
+}
+
+.dark {
+	--background: #1b1e1c;
+	--foreground: #f0eee9;
+	--card: #242826;
+	--card-foreground: #f0eee9;
+	--popover: #242826;
+	--popover-foreground: #f0eee9;
+	--primary: #2fa36f;
+	--primary-foreground: #ffffff;
+	--secondary: #1f3a2c;
+	--secondary-foreground: #cfe8da;
+	--muted: #2e322f;
+	--muted-foreground: #b3b0a8;
+	--accent: var(--msu-yellow);
+	--accent-foreground: #222222;
+	--destructive: #e5636c;
+	--border: rgb(255 255 255 / 10%);
+	--input: rgb(255 255 255 / 15%);
+	--ring: #2fa36f;
+	--sidebar: #0f2a1d;
+}
+
+@theme inline {
+	--font-sans: var(--font-body);
+	--font-display: var(--font-heading);
+	--color-msu-green: var(--msu-green);
+	--color-msu-green-dark: var(--msu-green-dark);
+	--color-msu-yellow: var(--msu-yellow);
+	--color-msu-cloud: var(--msu-cloud);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-sidebar: var(--sidebar);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+	}
+	/* หัวเรื่อง H1–H3 (รวมหัวการ์ด/ไดอะล็อก) ใช้ฟอนต์หัวเรื่อง — ห้ามตัวหนา/เอียงปลอม, line-height ≥ 1.3 กันสระถูกตัด */
+	h1,
+	h2,
+	h3,
+	[data-slot='card-title'],
+	[data-slot='dialog-title'],
+	[data-slot='alert-dialog-title'] {
+		font-family: var(--font-heading);
+		font-synthesis: none;
+		line-height: 1.35;
+	}
+	h1,
+	h2 {
+		font-weight: 700;
+	}
+	h3,
+	[data-slot='card-title'],
+	[data-slot='dialog-title'],
+	[data-slot='alert-dialog-title'] {
+		font-weight: 400;
+	}
+}

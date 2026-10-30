@@ -1,0 +1,14 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "pmo",
+	"compatibility_date": "2026-10-30",
+	"compatibility_flags": [
+		"nodejs_als"
+	],
+	"pages_build_output_dir": ".svelte-kit/cloudflare"
+	// เมื่อย้ายไป Cloudflare D1: สร้างฐานข้อมูลด้วย `npx wrangler d1 create pmo`
+	// แล้วเปิดคอมเมนต์ด้านล่าง ใส่ database_id ที่ได้ (โค้ดจะใช้ binding "DB" อัตโนมัติ)
+	// "d1_databases": [
+	// 	{ "binding": "DB", "database_name": "pmo", "database_id": "<id>", "migrations_dir": "drizzle" }
+	// ]
+}
